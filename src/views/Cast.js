@@ -3,6 +3,7 @@ import Spinner from '../components/Spinner';
 import Notification from '../components/Notification';
 // import CastList from '../components/CastList';
 import movieAPI from '../services/movieAPI';
+import noimage from '../assets/noimage.jpg';
 
 export default class Cast extends Component {
   state = {
@@ -33,7 +34,11 @@ export default class Cast extends Component {
               <li key={id}>
                 <img
                   className="CastImage"
-                  src={`${movieAPI.baseImageUrl}${profile_path}`}
+                  src={
+                    profile_path
+                      ? `${movieAPI.baseImageUrl}${profile_path}`
+                      : `${noimage}`
+                  }
                   alt=""
                   width="100px"
                 />
