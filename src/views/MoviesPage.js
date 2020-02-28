@@ -1,12 +1,17 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import getQueryParams from '../utils/getQueryParams';
 import Spinner from '../components/Spinner';
 import Notification from '../components/Notification';
 import Searchbox from '../components/Searchbox';
+import MoviesList from './MoviesList';
 import movieAPI from '../services/movieAPI';
+import PropTypes from 'prop-types';
 
 export default class MoviesPage extends Component {
+  static propTypes = {
+    location: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired,
+  };
   state = {
     movies: [],
     loading: false,
@@ -42,28 +47,12 @@ export default class MoviesPage extends Component {
 
   render() {
     const { movies, loading, error } = this.state;
-    const { match, location } = this.props;
     return (
       <>
         <Searchbox onSubmit={this.handleChangeQuery} />
         {error && <Notification message={error} />}
         {loading && <Spinner />}
-        {movies.length > 0 && (
-          <ul className="MovieList">
-            {movies.map(({ id, title }) => (
-              <li key={id}>
-                <Link
-                  to={{
-                    pathname: `${match.url}/${id}`,
-                    state: { from: location },
-                  }}
-                >
-                  {title}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        )}
+        {movies.length > 0 && <MoviesList movies={movies} />}
       </>
     );
   }
