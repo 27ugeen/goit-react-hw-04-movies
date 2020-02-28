@@ -6,8 +6,14 @@ import Cast from './Cast';
 import Reviews from './Reviews';
 import routes from '../routes';
 import movieAPI from '../services/movieAPI';
+import PropTypes from 'prop-types';
 
 export default class MovieDetailsPage extends Component {
+  static propTypes = {
+    match: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired,
+  };
   state = {
     movie: null,
     loading: false,
@@ -34,7 +40,6 @@ export default class MovieDetailsPage extends Component {
     if (state && state.from) {
       return history.push(state.from);
     }
-
 
     history.push(routes.movies);
   };

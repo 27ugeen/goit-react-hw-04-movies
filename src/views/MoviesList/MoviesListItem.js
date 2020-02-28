@@ -6,7 +6,7 @@ const MoviesListItem = ({ id, title, name, match, location }) => (
   <li>
     <Link
       to={{
-        pathname: `${match.url}movies/${id}`,
+        pathname: `${match.url}/${id}`,
         state: { from: location },
       }}
     >

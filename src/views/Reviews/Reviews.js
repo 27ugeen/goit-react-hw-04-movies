@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import Spinner from '../components/Spinner';
-import Notification from '../components/Notification';
-import movieAPI from '../services/movieAPI';
+import Spinner from '../../components/Spinner';
+import Notification from '../../components/Notification';
+import ReviewsList from './ReviewsList';
+import movieAPI from '../../services/movieAPI';
 
 export default class Reviews extends Component {
   state = {
@@ -27,14 +28,7 @@ export default class Reviews extends Component {
         {error && <Notification message={error} />}
         {loading && <Spinner />}
         {reviews.length > 0 ? (
-          <ul className="ReviewsList">
-            {reviews.map(({ id, author, content }) => (
-              <li key={id}>
-                <h2>Author: {author}</h2>
-                <p>{content}</p>
-              </li>
-            ))}
-          </ul>
+          <ReviewsList reviews={reviews} />
         ) : (
           <p>No reviews</p>
         )}
