@@ -1,11 +1,12 @@
-import React, { Component } from 'react';
+import React, { Component, Suspense, lazy } from 'react';
 import Spinner from '../../components/Spinner';
-import Notification from '../../components/Notification';
-import MovieInfo from './MovieInfo';
-import AdditionalInfo from './AdditionalInfo';
 import routes from '../../routes';
 import movieAPI from '../../services/movieAPI';
 import PropTypes from 'prop-types';
+
+const Notification = lazy(() => import('../../components/Notification'));
+const MovieInfo = lazy(() => import('./MovieInfo'));
+const AdditionalInfo = lazy(() => import('./AdditionalInfo'));
 
 export default class MovieDetailsPage extends Component {
   static propTypes = {
@@ -15,19 +16,16 @@ export default class MovieDetailsPage extends Component {
   };
   state = {
     movie: null,
-    loading: false,
     error: '',
   };
   componentDidMount() {
     this.fetchMovies(this.props.match.params.movieId);
   }
   fetchMovies = movieId => {
-    this.setState({ loading: true });
     movieAPI
       .fetchMoviesDetails(movieId)
       .then(movie => this.setState({ movie }))
-      .catch(({ message }) => this.setState({ error: message }))
-      .finally(() => this.setState({ loading: false }));
+      .catch(({ message }) => this.setState({ error: message }));
   };
 
   handleGoBack = () => {
@@ -43,20 +41,21 @@ export default class MovieDetailsPage extends Component {
     history.push(routes.movies);
   };
   render() {
-    const { movie, loading, error } = this.state;
+    const { movie, error } = this.state;
     return (
       <main>
         <button type="button" onClick={this.handleGoBack}>
           Go back
         </button>
-        {error && <Notification message={error} />}
-        {loading && <Spinner />}
-        {movie && (
-          <>
-            <MovieInfo movie={movie} />
-            <AdditionalInfo />
-          </>
-        )}
+        <Suspense fallback={<Spinner />}>
+          {error && <Notification message={error} />}
+          {movie && (
+            <>
+              <MovieInfo movie={movie} />
+              <AdditionalInfo />
+            </>
+          )}
+        </Suspense>
       </main>
     );
   }

@@ -11,7 +11,8 @@ const CastListItem = ({ name, profile_path, character }) => (
         profile_path ? `${movieAPI.baseImageUrl}${profile_path}` : `${noimage}`
       }
       alt=""
-      width="100px"
+      width="100"
+      height="150"
     />
     <p>{name}</p>
     <p>Character: {character}</p>

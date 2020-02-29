@@ -1,23 +1,27 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import Layout from './Layout';
-import HomePage from '../views/HomePage';
-import MoviesPage from '../views/MoviesPage';
-import MovieDetailsPage from '../views/MovieDetailsPage';
-import NotFound from '../views/NotFound';
+import Spinner from './Spinner';
 import routes from '../routes';
+
+const HomePage = lazy(() => import('../views/HomePage'));
+const MoviesPage = lazy(() => import('../views/MoviesPage'));
+const MovieDetailsPage = lazy(() => import('../views/MovieDetailsPage'));
+const NotFound = lazy(() => import('../views/NotFound'));
 
 const { home, movies, movieDetails } = routes;
 
 const App = () => (
   <>
     <Layout>
-      <Switch>
-        <Route path={home} exact component={HomePage} />
-        <Route path={movies} exact component={MoviesPage} />
-        <Route path={movieDetails} component={MovieDetailsPage} />
-        <Route component={NotFound} />
-      </Switch>
+      <Suspense fallback={<Spinner />}>
+        <Switch>
+          <Route path={home} exact component={HomePage} />
+          <Route path={movies} exact component={MoviesPage} />
+          <Route path={movieDetails} component={MovieDetailsPage} />
+          <Route component={NotFound} />
+        </Switch>
+      </Suspense>
     </Layout>
   </>
 );

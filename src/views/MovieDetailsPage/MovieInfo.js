@@ -11,18 +11,19 @@ const MovieInfo = ({
       className="MovieImage"
       src={`${movieAPI.baseImageUrl}${poster_path}`}
       alt={title}
-      width="240px"
+      width="240"
+      height="360"
     />
     <div className="MovieDescription">
       <h1 className="MovieTitle">{title}</h1>
       <p>Release date: {release_date}</p>
       <p>Vote average: {vote_average}</p>
-      <h2>Overview</h2>
+      <h2>Overview:</h2>
       <p>{overview}</p>
-      <h3>Genres</h3>
+      <h3>Genres:</h3>
       <ul className="GanresList">
         {genres.map(({ id, name }) => (
-          <li key={id}>{name}</li>
+          <li key={id}>{name},</li>
         ))}
       </ul>
     </div>
