@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { NavLink, Route, withRouter } from 'react-router-dom';
-import Cast from '../Cast';
-import Reviews from '../Reviews';
+import Spinner from '../../components/Spinner';
 import routes from '../../routes';
 import PropTypes from 'prop-types';
+
+const Cast = lazy(() => import('../Cast'));
+const Reviews = lazy(() => import('../Reviews'));
 
 const AdditionalInfo = ({ match, location }) => (
   <>
@@ -32,8 +34,10 @@ const AdditionalInfo = ({ match, location }) => (
         </li>
       </ul>
     </div>
-    <Route path={`${match.path}${routes.cast}`} component={Cast} />
-    <Route path={`${match.path}${routes.reviews}`} component={Reviews} />
+    <Suspense fallback={<Spinner />}>
+      <Route path={`${match.path}${routes.cast}`} component={Cast} />
+      <Route path={`${match.path}${routes.reviews}`} component={Reviews} />
+    </Suspense>
   </>
 );
 
