@@ -1,10 +1,9 @@
-import React, { Component, Suspense, lazy } from 'react';
+import React, { Component } from 'react';
 import Spinner from '../../components/Spinner';
+import Notification from '../../components/Notification';
+import CastList from './CastList';
 import movieAPI from '../../services/movieAPI';
 import PropTypes from 'prop-types';
-
-const Notification = lazy(() => import('../../components/Notification'));
-const CastList = lazy(() => import('./CastList'));
 
 export default class Cast extends Component {
   static propTypes = {
@@ -12,24 +11,28 @@ export default class Cast extends Component {
   };
   state = {
     cast: [],
+    loading: false,
     error: '',
   };
   componentDidMount() {
     this.fetchMovies(this.props.match.params.movieId);
   }
   fetchMovies = movieId => {
+    this.setState({ loading: true });
     movieAPI
       .fetchMovieCast(movieId)
       .then(({ cast }) => this.setState({ cast }))
-      .catch(({ message }) => this.setState({ error: message }));
+      .catch(({ message }) => this.setState({ error: message }))
+      .finally(() => this.setState({ loading: false }));
   };
   render() {
-    const { cast, error } = this.state;
+    const { cast, loading, error } = this.state;
     return (
-      <Suspense fallback={<Spinner />}>
+      <>
         {error && <Notification message={error} />}
+        {loading && <Spinner />}
         {cast.length > 0 ? <CastList cast={cast} /> : <p>No cast</p>}
-      </Suspense>
+      </>
     );
   }
 }

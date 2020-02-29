@@ -23,7 +23,7 @@ const MovieInfo = ({
       <h3>Genres:</h3>
       <ul className="GanresList">
         {genres.map(({ id, name }) => (
-          <li key={id}>{name},</li>
+          <li key={id}>{name}</li>
         ))}
       </ul>
     </div>
