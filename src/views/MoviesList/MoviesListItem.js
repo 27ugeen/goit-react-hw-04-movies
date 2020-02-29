@@ -1,12 +1,13 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
+import routes from '../../routes';
 import PropTypes from 'prop-types';
 
-const MoviesListItem = ({ id, title, name, match, location }) => (
+const MoviesListItem = ({ id, title, name, location }) => (
   <li>
     <Link
       to={{
-        pathname: `${match.url}/${id}`,
+        pathname: `${routes.movies}/${id}`,
         state: { from: location },
       }}
     >
@@ -19,7 +20,6 @@ MoviesListItem.propTypes = {
   id: PropTypes.number.isRequired,
   title: PropTypes.string,
   name: PropTypes.string,
-  match: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
 };
 
